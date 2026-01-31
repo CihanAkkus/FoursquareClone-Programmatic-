@@ -1,7 +1,8 @@
 
 import UIKit
+import FirebaseAuth
 
-class LoginVC: UIViewController {
+class SignUpVC: UIViewController {
     
     private let appNameLabel: UILabel = {
         let lbl = UILabel()
@@ -118,10 +119,71 @@ class LoginVC: UIViewController {
     
     @objc func signInButtonTapped( ){
         
+        if (emailText.text != "" && passwordText.text != "") {
+            Auth.auth().signIn(withEmail: emailText.text!, password: passwordText.text!) { authData, error in
+                if error != nil{
+                    self.makeAlert(titleInput: "Error", messageInput: error?.localizedDescription ?? "Error")
+                }else{
+                    
+                    let places = PlacesVC()
+                    let navigationController = UINavigationController(rootViewController: places)
+                    
+                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let delegate = windowScene.delegate as? SceneDelegate,
+                       let window = delegate.window{
+                        
+                        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve) {
+                            
+                            window.rootViewController = navigationController
+                            
+                        }
+                        
+                    }
+                }
+            }
+            
+        }else{
+            self.makeAlert(titleInput: "Error", messageInput: "Username/Password?")
+        }
         
     }
     
     @objc func signUpButtonTapped( ){
+        if (emailText.text != "" && passwordText.text != ""){
+            Auth.auth().createUser(withEmail: emailText.text!, password: passwordText.text!) { authData, error in
+                
+                if error != nil{
+                    self.makeAlert(titleInput: "Error", messageInput: error?.localizedDescription ?? "Error")
+                }else{
+                    
+                    let places = PlacesVC()
+                    
+                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let delegate = windowScene.delegate as? SceneDelegate,
+                       let window = delegate.window{
+                        
+                        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve) {
+                            window.rootViewController = places
+                        }
+                        
+                    }
+                }
+                
+            }
+        }else{
+            self.makeAlert(titleInput: "Error", messageInput: "Username/Password?")
+        }
+        
+    }
+    
+    func makeAlert(titleInput: String, messageInput: String){
+        let alert = UIAlertController(title: titleInput, message: messageInput, preferredStyle: UIAlertController.Style.alert)
+        let okButton = UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil)
+        
+        alert.addAction(okButton)
+        
+        self.present(alert, animated: true, completion: nil)
+        
         
     }
     
