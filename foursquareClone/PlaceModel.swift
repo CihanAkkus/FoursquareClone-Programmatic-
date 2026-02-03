@@ -1,7 +1,6 @@
-
-
 import Foundation
 import UIKit
+
 class PlaceModel {
     static let sharedInstance = PlaceModel()
     
