@@ -82,9 +82,9 @@ class DetailsVC: UIViewController,MKMapViewDelegate,CLLocationManagerDelegate {
                     
                     if let imageUrl = data?["imageUrl"] as? String{
                         
-                        self.ImageView.sd_setImage(with: URL(string: imageUrl),placeholderImage: UIImage(named: "Image1"))
+                        self.ImageView.sd_setImage(with: URL(string: imageUrl))
                     }else {
-                        print("HATA: Görsel URL'i veritabanında bulunamadı veya 'imageUrl' anahtarı yanlış.")
+                        print("Error")
                     }
                     // map Pinning
                     let location = CLLocationCoordinate2D(latitude: self.chosenLatitude, longitude: self.chosenLongitude)
